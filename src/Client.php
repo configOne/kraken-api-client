@@ -67,7 +67,6 @@ class Client implements Contracts\Client
      *                      margin = margin info
      *
      * @return PairCollection|Pair[]
-     * @throws KrakenApiErrorException
      */
     public function getAssetPairs($pair = null, string $info = 'info'): PairCollection
     {
@@ -92,7 +91,6 @@ class Client implements Contracts\Client
      *
      * @param string|array $pair comma delimited list of asset pairs to get info on
      * @return TickerCollection|Ticker[]
-     * @throws KrakenApiErrorException
      */
     public function getTicker($pair): TickerCollection
     {
@@ -111,7 +109,6 @@ class Client implements Contracts\Client
      * Get account balance
      *
      * @return BalanceCollection|Balance[]
-     * @throws KrakenApiErrorException
      */
     public function getAccountBalance(): BalanceCollection
     {
@@ -126,7 +123,6 @@ class Client implements Contracts\Client
      * Get trade balance
      *
      * @return array
-     * @throws KrakenApiErrorException
      */
     public function getTradeBalance(): array
     {
@@ -138,7 +134,6 @@ class Client implements Contracts\Client
      *
      * @param bool $trades Whether or not to include trades in output
      * @return OrdersCollection
-     * @throws KrakenApiErrorException
      */
     public function getOpenOrders(bool $trades = false): OrdersCollection
     {
@@ -156,7 +151,6 @@ class Client implements Contracts\Client
      * @param Carbon|null $start Starting date
      * @param Carbon|null $end Ending date
      * @return OrdersCollection
-     * @throws KrakenApiErrorException
      */
     public function getClosedOrders(bool $trades = false, Carbon $start = null, Carbon $end = null): OrdersCollection
     {
@@ -182,7 +176,6 @@ class Client implements Contracts\Client
      *
      * @param OrderContract $order
      * @return OrderStatus
-     * @throws KrakenApiErrorException
      */
     public function addOrder(OrderContract $order): OrderStatus
     {
@@ -196,7 +189,6 @@ class Client implements Contracts\Client
      *
      * @param string $transactionId
      * @return array
-     * @throws KrakenApiErrorException
      */
     public function cancelOrder(string $transactionId): array
     {
@@ -210,7 +202,7 @@ class Client implements Contracts\Client
      * @param array $parameters
      * @param bool $isPublic
      * @return array
-     * @throws KrakenApiErrorException
+
      */
     public function request(string $method, array $parameters = [], bool $isPublic = true): array
     {
@@ -230,7 +222,7 @@ class Client implements Contracts\Client
         $result = $this->sendRequest($method, $parameters, $isPublic, $headers);
 
         if (!empty($result['error'])) {
-            throw new KrakenApiErrorException(implode(', ', $result['error']));
+            return $result;
         }
 
         return $result['result'];
